@@ -66,7 +66,7 @@ class AdminOrderController extends Controller
         if (!$order) {
             return redirect()->back()->with('error', 'Đơn hàng không tồn tại.');
         }
-        if($order->status_order === 5){
+        if($order->status_order == 5){
             // Xóa các chi tiết đơn hàng liên quan
         $order->orderDetails()->delete();
 
@@ -100,14 +100,13 @@ class AdminOrderController extends Controller
         $order->status_order = $status;
         $order->save();
 
-        if ($status === 5 || $status === 0 ){ // Nếu chuyển sang status_order = 5 (Đã hoàn trả)
+        if ($status == 5 || $status == 0 ){
             foreach ($order->orderDetails as $orderDetail) {
                 // Tìm sản phẩm và kích thước tương ứng để tăng số lượng
                 $productSize = ProductVariant::where('product_id', $orderDetail->productid)
                     ->where('size_id', $orderDetail->sizeid)
                     ->where('color_id', $orderDetail->colorid) // Tìm theo màu sắc
                     ->first();
-
                 if ($productSize) {
                     // Tăng số lượng sản phẩm và kích thước tương ứng
                     $productSize->quantity += $orderDetail->quantity;

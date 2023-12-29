@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\ProductVariant;
 use App\Models\Size;
+use App\Models\OrderDetail;
 class AdminSizeController extends Controller
 {
     public function index()
@@ -39,7 +40,7 @@ class AdminSizeController extends Controller
         $size = Size::find($id);
 
         $productVariants = ProductVariant::where('size_id', $id)->exists();
-
+        $orderDetails = OrderDetail::where('colorid', $id)->exists();
         if ($productVariants || $orderDetails) {
             return redirect()->back()->with('error', 'Không thể xóa size vì size đang được sử dụng trong sản phẩm hoặc đơn hàng.');
         }
