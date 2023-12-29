@@ -35,12 +35,19 @@ class AdminAccountController extends Controller
             return redirect()->back()->with('error', 'Không tìm thấy tài khoản');
         }
 
+        // Kiểm tra nếu mật khẩu mới khác mật khẩu cũ
+        if ($request->filled('password_account')) {
+            $newPassword = $validatedData['password_account'];
+            if (md5($newPassword) !== $account->password_account) {
+                $account->password_account = md5($newPassword);
+            } else {
+                // Nếu mật khẩu mới trùng với mật khẩu cũ, không cho phép thay đổi
+                return redirect()->back()->with('error', 'Mật khẩu mới không được trùng với mật khẩu cũ');
+            }
+        }
+
         $account->name_account = $validatedData['name_account'];
         $account->email_account = $validatedData['email_account'];
-
-        if ($request->filled('password_account')) {
-            $account->password_account = md5($validatedData['password_account']);
-        }
         $account->status_account = $request->has('status_account') ? 1 : 0;
         $account->save();
 

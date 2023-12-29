@@ -30,7 +30,7 @@
                             <h5 class="card-title">Mã vé: {{ $discount->code }}</h5>
                             <p class="card-text">Giảm: {{ number_format($discount->discount) }}</p>
                             <p class="card-text">Hết
-                                hạn:{{ \Carbon\Carbon::parse($discount->expiration_date)->format('d/m/Y') }}</p>
+                                hạn: {{ \Carbon\Carbon::parse($discount->expiration_date)->format('d/m/Y') }}</p>
                             <p class="card-text">Số lượng còn lại:
                                 {{ number_format($discount->limit_number - $discount->number_used) }} mã</p>
                             <p class="card-text">Thanh toán tối thiểu: {{ number_format($discount->payment_limit) }}</p>

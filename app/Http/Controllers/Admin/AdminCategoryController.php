@@ -28,6 +28,14 @@ class AdminCategoryController extends Controller
 
     public function store(Request $request)
     {
+        $nameCategory = $request->input('name_category');
+        $linkCategory = $request->input('link_category');
+
+        if (empty($nameCategory) && empty($linkCategory)) {
+            return redirect()->route('admin.categories.create')
+                ->withErrors(['error' => 'Vui lòng nhập đầy đủ thông tin']);
+        }
+
         $validatedData = $request->validate([
             'name_category' => [
                 'required',
@@ -60,6 +68,12 @@ class AdminCategoryController extends Controller
 
     public function update(Request $request, $id)
     {
+        $category = Category::findOrFail($id);
+        // Kiểm tra nếu cả hai trường bị bỏ trống khi chỉnh sửa
+        if (empty($request->input('name_category')) && empty($request->input('link_category'))) {
+            return redirect()->back()->with('error', 'Vui lòng nhập đầy đủ thông tin (tên và link danh mục)');
+        }
+
         $category = Category::findOrFail($id);
         if ($request->input('status_category') == 0 && $category->childCategories()->exists()) {
             return redirect()->back()->with('error', 'Không thể ngừng kích hoạt vì danh mục đang được sử dụng làm danh mục cha cho danh mục khác.');

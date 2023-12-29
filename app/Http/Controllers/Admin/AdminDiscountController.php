@@ -46,7 +46,7 @@ class AdminDiscountController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $expiration_date = Carbon::createFromFormat('d/m/Y H:i', $request->input('expiration_date')); 
+        $expiration_date = Carbon::createFromFormat('d/m/Y H:i', $request->input('expiration_date'));
 
         $dateNow = Carbon::now();
         if ($expiration_date < $dateNow) {
@@ -95,8 +95,12 @@ class AdminDiscountController extends Controller
         if (!$discount) {
             return redirect()->back()->with('error', 'Không tìm thấy mã giảm.');
         }
-        $expiration_date = Carbon::createFromFormat('d/m/Y H:i', $request->input('expiration_date'))->format('Y-m-d H:i:s');
+        $expiration_date = Carbon::createFromFormat('d/m/Y H:i', $request->input('expiration_date'));
 
+        $dateNow = Carbon::now();
+        if ($expiration_date < $dateNow) {
+            return redirect()->back()->with('error', 'Ngày và giờ hết hạn phải lớn hơn hoặc bằng ngày và giờ hiện tại.');
+        }
         $discount->code = $request->input('code');
         $discount->expiration_date = $expiration_date;
         $discount->discount = (float) str_replace(',', '', $request->input('discount'));

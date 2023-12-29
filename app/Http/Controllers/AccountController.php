@@ -42,7 +42,16 @@ class AccountController extends Controller
             session(['account_id' => $account->id]);
             return response()->json(['success' => true, 'message' => 'Đăng nhập thành công']);
         } else {
-            return response()->json(['success' => false, 'message' => 'Thông tin tài khoản hoặc mật khẩu không đúng']);
+            // Kiểm tra tài khoản không tồn tại trong hệ thống
+            $checkAccount = Account::where('email_account', $login)
+                            ->orWhere('name_account', $login)
+                            ->first();
+
+            if (!$checkAccount) {
+                return response()->json(['success' => false, 'message' => 'Tài khoản không tồn tại trong hệ thống. Vui lòng đăng ký tài khoản mới.']);
+            } else {
+                return response()->json(['success' => false, 'message' => 'Thông tin tài khoản hoặc mật khẩu không đúng']);
+            }
         }
     }
 
@@ -84,20 +93,19 @@ class AccountController extends Controller
         $account = Account::findOrFail($accountId);
 
         $currentPassword = md5($request->input('current_password'));
-        $newPassword = $request->input('new_password');
-        $confirmPassword = $request->input('confirm_password');
+        $newPassword = md5($request->input('new_password'));
+        $confirmPassword = md5( $request->input('confirm_password'));
 
         if ($account->password_account !== $currentPassword) {
             return redirect()->back()->with('error', 'Mật khẩu hiện tại không chính xác');
         }
-
         if ($newPassword === $currentPassword) {
-            return redirect()->back()->with('error', 'Mật khẩu mới phải khác với mật khẩu hiện tại.');
+            return redirect()->back()->with('error', 'Mật khẩu mới không được trùng với mật khẩu cũ.');
         }
-
         if ($newPassword !== $confirmPassword) {
             return redirect()->back()->with('error', 'Mật khẩu mới và xác nhận mật khẩu không khớp.');
         }
+
 
         // Update password and save to the database
         $account->password_account = md5($newPassword);
@@ -123,11 +131,11 @@ class AccountController extends Controller
 
         /// Kiểm tra trống thông tin
         if (empty($username) || empty($name) || empty($email) || empty($password) || empty($repassword) || empty($phone)) {
-            return redirect()->route('register')->with('error', 'Vui lòng điền đầy đủ thông tin bắt buộc có * đỏ.')->withInput();
+            return redirect()->route('register')->with('error', 'Vui lòng điền đầy đủ thông tin bắt buộc có ( * ) đỏ.')->withInput();
         }
 
         /// Kiểm tra số điện thoại
-        if (strlen($phone) !== 10 || !ctype_digit($phone)) {
+        if (strlen($phone) !== 10) {
             return redirect()->route('register')->with('error', 'Số điện thoại phải có 10 chữ số.')->withInput();
         }
 
@@ -147,6 +155,7 @@ class AccountController extends Controller
         if ($existingAccount) {
             return redirect()->route('register')->with('error', 'Số điện thoại đã tồn tại.')->withInput();
         }
+
         // Tạo tài khoản mới
         $account = new Account();
         $account->name_account = $username;
@@ -165,6 +174,7 @@ class AccountController extends Controller
         $customer->email_customer = $email;
         $customer->phone_customer = $phone;
         $customer->save();
+
 
         // Tạo mã giảm giá
         $accountName = $account->name_account;
@@ -196,12 +206,15 @@ class AccountController extends Controller
         $phone  = $request->input('phone');
         $address = $request->input('address');
 
-        if(empty($name) || empty($phone) || empty($address)){
+        if(empty($name) || empty($phone)){
             return redirect()->back()->with('error', 'Không được để trống thông tin');
         }
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
+        }
+        if(strlen($phone) !== 10){
+            return redirect()->back()->with('error', 'Số điện thoại phải là số có 10 chữ số');
         }
 
         $accountId = session('account_id');
