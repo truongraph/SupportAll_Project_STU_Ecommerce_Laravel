@@ -280,8 +280,7 @@
                                     <div class="field">
                                         <div class="field-input-wrapper">
                                             <label class="field-label" for="name">Họ và tên</label>
-                                            <input type="text" name="name" value="{{ $customerInfo ? $customerInfo->name_customer : old('name') }}" required class="field-input" placeholder="Họ và tên">
-
+                                            <input type="text" name="name" value="{{ !session()->has('account_id') ? ($customerInfo ? $customerInfo->name_customer : old('name')) : '' }}"  class="field-input" placeholder="Họ và tên">
                                         </div>
 
                                     </div>
@@ -289,25 +288,22 @@
                                     <div class="field  field-half ">
                                         <div class="field-input-wrapper">
                                             <label class="field-label" for="checkout_user_email">Email</label>
-                                            <input type="text" name="email" value="{{ $customerInfo ? $customerInfo->email_customer : old('email') }}" required class="field-input"  placeholder="Email">
-
+                                            <input type="text" name="email" value="{{ !session()->has('account_id') ? ($customerInfo ? $customerInfo->email_customer : old('email')) : '' }}"  class="field-input" placeholder="Email">
                                         </div>
 
                                     </div>
 
-
-
                                     <div class="field field-required field-half  ">
                                         <div class="field-input-wrapper">
                                             <label class="field-label" for="billing_address_phone">Số điện thoại</label>
-                                            <input type="number" name="phone" value="{{ $customerInfo ? $customerInfo->phone_customer : old('phone') }}" required class="field-input" placeholder="Số điện thoại">
+                                            <input type="number" name="phone" value="{{ !session()->has('account_id') ? ($customerInfo ? $customerInfo->phone_customer : old('phone')) : '' }}"  class="field-input" placeholder="Số điện thoại">
                                         </div>
 
                                     </div>
                                     <div class="field   ">
                                         <div class="field-input-wrapper">
                                             <label class="field-label" for="billing_address_address1">Địa chỉ</label>
-                                            <input name="address" value="{{ $customerInfo ? $customerInfo->address_customer : old('address') }}" required placeholder="Địa chỉ giao hàng" class="field-input" style="height: auto !important;" />
+                                            <input name="address" value="{{ !session()->has('account_id') ? ($customerInfo ? $customerInfo->address_customer : old('address')) : '' }}"  placeholder="Địa chỉ giao hàng" class="field-input" style="height: auto !important;" />
                                         </div>
 
                                     </div>
@@ -378,6 +374,11 @@
                         toastr.error(response.message);
                         $('#total').text(number_format(originalTotal) + ' đ');
                         $('#total_price').val(originalTotal);
+                        $('#discount_info').text(''); // Xóa thông tin về mã giảm giá
+                        $('#discount_money').text('');
+                        if (!response.hasDiscountApplied) {
+                            $('#remove_discount_button').hide(); // Ẩn nút gỡ mã nếu không có mã áp dụng
+                        }
                         $('#discount_code').val('');
                     }
                 },
@@ -497,8 +498,8 @@
                 prevEl: ".swiper-button-prev",
             },
         });
-        $('.error').delay(2000).hide(0);
-        $('.alert').delay(2000).hide(0);
+        $('.error').delay(3000).hide(0);
+        $('.alert').delay(3000).hide(0);
     </script>
 
 </body>

@@ -189,7 +189,7 @@
             // Đóng tab in khi nó mất focus (được tắt)
             printWindow.onblur = function() {
                 this.close();
-                window.removeEventListener('beforeunload', closePrintWindow); // Hủy lắng nghe sự kiện khi đóng in
+                window.removeEventListener('beforeunload', closePrintWindow);
             };
             printWindow.focus();
         } else {

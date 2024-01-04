@@ -26,19 +26,21 @@
             <div class="col-lg-12">
                 <div class="shop-product-wrapper">
                     <div class="row align-itmes-center">
-                        <div class="col"><span class="title-shop">Sản phẩm của shop</span>
+                        <div class="col"><span class="title-shop">Sản phẩm của shop </span>
+
                         </div>
                         <div class="col">
                             <!-- product-short start -->
                             <div class="product-short">
                                 <select id="sortControl" class="nice-select" onchange="sortby(this.value)">
                                     <option value="number_buy-desc" {{ request()->query('sort') === 'number_buy-desc' ? 'selected' : '' }}>Bán chạy nhất</option>
-                                    <option value="name-asc" {{ request()->query('sort') === 'name-asc' ? 'selected' : '' }}>A → Z</option>
-                                    <option value="name-desc" {{ request()->query('sort') === 'name-desc' ? 'selected' : '' }}>Z → A</option>
+                                    <option value="name-desc" {{ request()->query('sort') === 'name-desc' ? 'selected' : '' }}>A → Z</option>
+                                    <option value="name-asc" {{ request()->query('sort') === 'name-asc' ? 'selected' : '' }}>Z → A</option>
                                     <option value="price-asc" {{ request()->query('sort') === 'price-asc' ? 'selected' : '' }}>Giá tăng dần</option>
                                     <option value="price-desc" {{ request()->query('sort') === 'price-desc' ? 'selected' : '' }}>Giá giảm dần</option>
                                     <option value="created-desc" {{ request()->query('sort') === 'created-desc' ? 'selected' : '' }}>Hàng mới nhất</option>
                                     <option value="created-asc" {{ request()->query('sort') === 'created-asc' ? 'selected' : '' }}>Hàng cũ nhất</option>
+                                    <option value="sell-asc" {{ request()->query('sort') === 'sell-asc' ? 'selected' : '' }}>Hàng khuyến mãi</option>
                                 </select>
                             </div>
                             <!-- product-short end -->

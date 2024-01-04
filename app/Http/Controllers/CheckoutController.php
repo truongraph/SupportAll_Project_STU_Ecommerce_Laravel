@@ -39,7 +39,7 @@ class CheckoutController extends Controller
 
                 if (!$productVariant || $item['quantity'] > $productVariant->quantity) {
                     return redirect()->route('cart.index')
-                        ->with('error', 'Số lượng sản phẩm không khả dụng. Vui lòng kiểm tra lại giỏ hàng của bạn.')
+                        ->with('error', 'Số lượng sản phẩm của bạn đã vượt số lượng tồn kho. Vui lòng kiểm tra lại giỏ hàng của bạn.')
                         ->withInput();
                 }
                 if (!empty($error)) {
@@ -78,7 +78,7 @@ class CheckoutController extends Controller
         $discount = Discount::where('code', $discountCode)->first();
 
         if ($discount && $discount->expiration_date >= now()) {
-            // Kiểm tra giới hạn số lượt
+            // Kiểm tra số lượt còn lại của mã
             $limitNumber = $discount->limit_number ?? PHP_INT_MAX;
             $timesUsed = $discount->number_used ?? 0;
 
@@ -166,7 +166,7 @@ class CheckoutController extends Controller
         $dateOrder = Carbon::now('Asia/Ho_Chi_Minh');
         $cart = json_decode($request->input('cart'), true);
         $date = now()->format('dmy'); // ddmmyy
-        $time = $dateOrder->format('Hi'); // Lấy giờ và phút hiện tại theo định dạng HHii
+        $time = $dateOrder->format('Hi'); // Lấy giờ và phút hiện tại theo định dạng Hi
         $random = mt_rand(1, 9); // Sinh số ngẫu nhiên từ 10 đến 99
         $orderCode = "OD{$date}{$time}{$random}";
         $discountCode = $request->input('discount_code');
@@ -183,17 +183,19 @@ class CheckoutController extends Controller
                 ->first();
 
             if (!$productVariant || $item['quantity'] > $productVariant->quantity) {
-                return redirect()->route('checkout.index')->with('error', 'Số lượng sản phẩm không khả dụng. Vui lòng kiểm tra lại giỏ hàng của bạn.')->withInput();
+                return redirect()->route('checkout.index')->with('error', 'Số lượng sản phẩm của bạn đã vượt số lượng tồn kho. Vui lòng kiểm tra lại giỏ hàng của bạn.')->withInput();
             }
         }
         if (empty($name) || empty($phone) || empty($address)) {
-            return redirect()->route('checkout.index')->with('error', 'Vui lòng điền đầy đủ thông tin bắt buộc.')->withInput();
+            return redirect()->route('checkout.index')->with('error', 'Vui lòng điền đầy đủ thông tin trước khi hoàn tất đặt hàng.')->withInput();
+        }
+        if(strlen($phone) != 10){
+            return redirect()->route('checkout.index')->with('error', 'Số điện thoại phải là số có 10 chữ số.')->withInput();
         }
         // Kiểm tra email tồn tại
         $existingCustomer = Customer::where('email_customer', $email)->first();
         //Nếu chưa tồn tại
         if (!$existingCustomer) {
-            //return redirect()->route('checkout.index')->with('error', 'Email đã tồn tại trong hệ thống. Vui lòng đăng nhập để đặt hàng')->withInput();
             $customer = new Customer();
             $customer->name_customer = $name;
             $customer->email_customer = $email;
@@ -212,8 +214,9 @@ class CheckoutController extends Controller
             $customer->id_account = $account->id;
             $customer->save();
             //Tạo discount cho tài khoản mới
+            $discountRandom = Str::random(3);
             $accountName = explode('@', $customer->email_customer)[0];
-            $discountCodedata = 'WELCOME_' . strtoupper($accountName);
+            $discountCodedata = 'WELCOME_' . strtoupper($accountName).$discountRandom;
             $expirationDatedata = Carbon::now()->addDays(30);
             $discountdata = new Discount();
             $discountdata->code = $discountCodedata;

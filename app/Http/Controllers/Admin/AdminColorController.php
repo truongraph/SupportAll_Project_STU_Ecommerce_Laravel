@@ -19,9 +19,10 @@ class AdminColorController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'desc_color' => 'required|unique:colors,desc_color' // Bắt buộc và duy nhất trong bảng colors
+            'desc_color' => 'required|unique:colors,desc_color'
         ], [
             'desc_color.unique' => 'Màu sắc này đã tồn tại.',
+            'desc_color.required' => 'Vui lòng nhập tên màu sắc.',
         ]);
         try {
             $color = new Color();
@@ -41,8 +42,8 @@ class AdminColorController extends Controller
         $productVariants = ProductVariant::where('color_id', $id)->exists();
         $orderDetails = OrderDetail::where('colorid', $id)->exists();
 
-        if ($productVariants || $orderDetails) {
-            return redirect()->back()->with('error', 'Không thể xóa màu sắc vì màu sắc đang được sử dụng trong sản phẩm hoặc đơn hàng.');
+        if ($productVariants) {
+            return redirect()->back()->with('error', 'Không thể xóa màu sắc vì màu sắc đang được sử dụng trong sản phẩm.');
         }
 
         $color->delete();
@@ -61,9 +62,10 @@ class AdminColorController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'desc_color' => 'required|unique:colors,desc_color,' . $id // Bắt buộc và duy nhất, trừ màu sắc hiện tại (id)
+            'desc_color' => 'required|unique:colors,desc_color,' . $id
         ], [
             'desc_color.unique' => 'Màu sắc này đã tồn tại.',
+            'desc_color.required' => 'Vui lòng nhập tên màu sắc.',
         ]);
 
         try {

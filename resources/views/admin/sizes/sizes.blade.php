@@ -36,7 +36,7 @@
     <div class="col-xl-4">
         <div class="card">
             <div class="card-body">
-                
+
                 <form method="post"
                     action="{{ isset($size) ? route('admin.sizes.update', $size->id) : route('admin.sizes.store') }}">
                     @csrf
@@ -44,14 +44,14 @@
                     @method('PUT')
                     @endif
                     <div class="mb-3">
-                        <label for="desc_size" class="form-label" >{{ isset($size) ? "Chỉnh sửa kích thước" : "Tạo mới kích thước"  }} </label>
-                        <input type="text" class="form-control" id="desc_size" name="desc_size"  required title="Vui lòng nhập tên kích thước"
-                            value="{{ isset($size) ? $size->desc_size : '' }}" placeholder="Nhập tên kích thước">
-                    @error('desc_size')
+                        @error('desc_size')
                     <div class="alert alert-danger">
                         {{ $message }}
                     </div>
                     @enderror
+                        <label for="desc_size" class="form-label" >{{ isset($size) ? "Chỉnh sửa kích thước" : "Tạo mới kích thước"  }} </label>
+                        <input type="text" class="form-control" id="desc_size" name="desc_size" title="Vui lòng nhập tên kích thước"
+                            value="{{ isset($size) ? $size->desc_size : '' }}" placeholder="Nhập tên kích thước">
                     </div>
                     <button class="btn btn-success" type="submit"><i class="bx bx-save"></i> {{ isset($size) ? 'Cập
                         nhật' : 'Lưu kích thước' }}</button>

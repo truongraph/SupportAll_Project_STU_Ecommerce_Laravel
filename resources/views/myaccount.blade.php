@@ -78,7 +78,9 @@
                                                                     value="{{ $customer->name_customer }}"
                                                                     class="form-control">
                                                             </div>
-
+                                                            @error('name')
+                                                                <p class="alert alert-danger"> {{ $message }}</p>
+                                                            @enderror
                                                         </div>
                                                         <div class="login-input-box col-md-3">
                                                             <div class="col_full">
@@ -87,7 +89,9 @@
                                                                     value="{{ $customer->phone_customer }}"
                                                                     class="form-control">
                                                             </div>
-
+                                                            @error('phone')
+                                                                <p class="alert alert-danger"> {{ $message }}</p>
+                                                            @enderror
                                                         </div>
                                                         <div class="login-input-box col-md-6">
                                                             <div class="col_full">
@@ -108,7 +112,7 @@
                                         </div>
                                         <div class="tab-pane fade @if (session('activeTab') === 'orders') show active @endif"
                                             id="orders">
-                                            <h3>Đơn hàng chưa duyệt</h3>
+                                            <h3>Đơn hàng của bạn</h3>
                                             <div class="table-responsive">
                                                 @if ($orders->isNotEmpty())
                                                     <table

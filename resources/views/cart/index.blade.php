@@ -122,11 +122,11 @@
                                                 </div>
                                             </div>
 
-
                                         </div>
                                         @endforeach
                                     </div>
                                 </div>
+
                             </form>
                         </div> @else
                         <div class="expanded-message text-center">Giỏ hàng của bạn đang trống</div>
@@ -177,6 +177,7 @@
 
 
                             </div>
+
                         </div>
 
                     </div>
@@ -252,7 +253,7 @@
                         toastr.success(message);
                         setTimeout(function() {
                             window.location.reload();
-                        }, 500);
+                        }, 1000);
                     }
                 })
                 .catch(function(error) {
@@ -266,7 +267,7 @@
         });
     });
 
-
+    //Xử lý xóa sản phẩm
     removeButtons.forEach(function(button) {
         button.addEventListener('click', function() {
             var productid = this.getAttribute('data-product');
@@ -294,7 +295,7 @@
                                 toastr.success(message);
                                 setTimeout(function() {
                                     window.location.reload();
-                                }, 200);
+                                }, 2000);
                             }
                         })
                         .catch(function(error) {

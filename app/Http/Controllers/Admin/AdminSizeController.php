@@ -18,9 +18,10 @@ class AdminSizeController extends Controller
     public function store(Request $request)
     {
         $validateData = $request->validate([
-            'desc_size' => 'required|unique:sizes,desc_size' // Bắt buộc và duy nhất trong bảng sizes
+            'desc_size' => 'required|unique:sizes,desc_size'
         ], [
             'desc_size.unique' => 'Kích thước này đã tồn tại.',
+            'desc_size.required' => 'Vui lòng nhập tên kích thước.',
         ]);
 
         try {
@@ -40,13 +41,13 @@ class AdminSizeController extends Controller
 
         $productVariants = ProductVariant::where('size_id', $id)->exists();
 
-        if ($productVariants || $orderDetails) {
-            return redirect()->back()->with('error', 'Không thể xóa size vì size đang được sử dụng trong sản phẩm hoặc đơn hàng.');
+        if ($productVariants) {
+            return redirect()->back()->with('error', 'Không thể xóa màu sắc vì màu sắc đang được sử dụng trong sản phẩm.');
         }
 
         $size->delete();
 
-        return redirect()->back()->with('success', 'Đã xóa kích thước thành công.');
+        return redirect()->back()->with('success', 'Đã xóa màu sắc thành công.');
     }
 
     public function edit($id)
@@ -60,9 +61,10 @@ class AdminSizeController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'desc_size' => 'required|unique:sizes,desc_size,' . $id // Bắt buộc và duy nhất, trừ màu sắc hiện tại (id)
+            'desc_size' => 'required|unique:sizes,desc_size,' . $id
         ], [
             'desc_size.unique' => 'Kích thước này đã tồn tại.',
+            'desc_size.required' => 'Vui lòng nhập tên kích thước.',
         ]);
 
         try {

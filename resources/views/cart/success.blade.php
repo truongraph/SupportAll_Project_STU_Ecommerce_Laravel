@@ -145,12 +145,13 @@
                                         </tr>
                                     </tfoot>
                                 </table>
+                                @if($order->paymentmethod->name_payment !== "Thanh toán khi nhận hàng")
                                     <hr style="border: 1px dashed rgb(131, 131, 131); margin: 25px auto">
                                     <div class="mb-3">
                                         <h2 class="title-cart mb-2">Tài khoản ngân hàng</h2>
                                         <p class="mb-2" style="color: #000;"><strong style="color:red">*Nội dung chuyển khoản:</strong> Mã đơn hàng và Số điện thoại</p>
                                         <span class="mb-2" style="color: #000;"><i class='bx bx-copy' ></i> Copy nội dung chuyển khoản: <a href="" style="color:green"><strong>{{ $order->code_order }}va{{ $order->phone_order }}</strong></a></span>
-                                        <p class="mt-2">- Trước hoặc sau khi chuyển khoản. Vui lòng chụp lại thông tin chuyển khoản và liên hệ cho cửa hàng qua số hotline:<strong style="color:red">0789703120</strong> để được xác nhân đơn hàng</p>
+                                        <p class="mt-2">- Trước hoặc sau khi chuyển khoản. Vui lòng chụp lại thông tin chuyển khoản và liên hệ cho cửa hàng qua số hotline:<strong style="color:red">0789703120</strong> để được xác nhận đơn hàng</p>
                                     </div>
                                     <table class="table table-bordered p-10 bg-white">
                                         <tr>
@@ -171,7 +172,20 @@
                                             <td style="padding:5px">0789703120</td>
                                         </tr>
                                     </table>
-
+                                    <p>
+                                        <div style="font-size: 11px;text-align:center;margin-top:30px;">
+                                            <p><i>Mọi thắc mắc xin hãy liên hệ về hotline: 0789703120</i></p>
+                                            <p><i> Địa chỉ : 180 Cao Lỗ, P.4, Q.8, HCM</i></p>
+                                        </div>
+                                    </p>
+                                    @else
+                                    <p>
+                                        <div style="font-size: 11px;text-align:center;margin-top:50px;">
+                                            <p><i>Mọi thắc mắc xin hãy liên hệ về hotline: 0789703120</i></p>
+                                            <p><i> Địa chỉ : 180 Cao Lỗ, P.4, Q.8, HCM</i></p>
+                                        </div>
+                                    </p>
+                                @endif
                             </div>
                         </div>
                     </div>

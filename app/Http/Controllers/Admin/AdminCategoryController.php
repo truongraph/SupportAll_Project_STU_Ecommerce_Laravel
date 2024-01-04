@@ -28,14 +28,6 @@ class AdminCategoryController extends Controller
 
     public function store(Request $request)
     {
-        $nameCategory = $request->input('name_category');
-        $linkCategory = $request->input('link_category');
-
-        if (empty($nameCategory) && empty($linkCategory)) {
-            return redirect()->route('admin.categories.create')
-                ->withErrors(['error' => 'Vui lòng nhập đầy đủ thông tin']);
-        }
-
         $validatedData = $request->validate([
             'name_category' => [
                 'required',
@@ -45,7 +37,8 @@ class AdminCategoryController extends Controller
             'id_parent' => 'nullable|exists:categories,id'
 
         ], [
-            'name_category.unique' => 'Tên danh mục này đã tồn tại, vui lòng nhập tên khác.'
+            'name_category.required' => 'Vui lòng điền thông tin danh mục.',
+            'name_category.unique' => 'Tên danh mục này đã tồn tại, vui lòng nhập tên khác.',
         ]);
         $validatedData['status_category'] = $request->input('status_category', 1);
         try {
@@ -68,28 +61,20 @@ class AdminCategoryController extends Controller
 
     public function update(Request $request, $id)
     {
-        $category = Category::findOrFail($id);
-        // Kiểm tra nếu cả hai trường bị bỏ trống khi chỉnh sửa
-        if (empty($request->input('name_category')) && empty($request->input('link_category'))) {
-            return redirect()->back()->with('error', 'Vui lòng nhập đầy đủ thông tin (tên và link danh mục)');
-        }
 
         $category = Category::findOrFail($id);
         if ($request->input('status_category') == 0 && $category->childCategories()->exists()) {
             return redirect()->back()->with('error', 'Không thể ngừng kích hoạt vì danh mục đang được sử dụng làm danh mục cha cho danh mục khác.');
         }
         $validatedData = $request->validate([
-            'name_category' => 'required',
+            'name_category' => 'required|unique:categories,name_category,'. $id,
             'link_category' => 'required',
             'id_parent' => 'nullable|exists:categories,id'
+        ], [
+            'name_category.required' => 'Vui lòng điền thông tin danh mục',
+            'name_category.unique' => 'Tên danh mục này đã tồn tại, vui lòng nhập tên khác.'
         ]);
-        $existingCate = Category::where('name_category', $validatedData['name_category'])
-            ->where('id', '!=', $id)
-            ->first();
 
-        if ($existingCate) {
-            return redirect()->back()->with('error', 'Tên danh mục này đã tồn tại trong hệ thống.');
-        }
         $validatedData['status_category'] = $request->has('status_category') ? 1 : 0;
         $category->update($validatedData);
         session()->flash('success', 'Chỉnh sửa danh mục thành công');

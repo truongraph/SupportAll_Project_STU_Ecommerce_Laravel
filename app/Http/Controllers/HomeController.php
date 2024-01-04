@@ -30,6 +30,7 @@ class HomeController extends Controller
             ->get();
         // Lấy các sản phẩm mới nhất
         $newestProducts = Product::orderBy('id', 'desc')->take(5)->get();
+        
         // Lấy các sp giảm giá
         $sellProducts = Product::where('sellprice_product', '>', 0)
             ->orderBy('created_at', 'desc')

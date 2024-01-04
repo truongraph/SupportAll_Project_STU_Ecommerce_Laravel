@@ -28,7 +28,7 @@
                 <!-- shop-product-wrapper start -->
                 <div class="shop-product-wrapper">
                     <div class="row align-itmes-center">
-                        <div class="col"><span class="title-shop">Danh mục: {{ $category->name_category }}</span>
+                        <div class="col"><span class="title-shop">Danh mục: {{ $category->name_category }} </span>
                         </div>
                         <div class="col">
                             <!-- product-short start -->

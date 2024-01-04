@@ -156,19 +156,5 @@ class CartController extends Controller
 
         return view('cart.index', compact('cart', 'total'));
     }
-    public function showCart()
-    {
-        $cart = session()->get('cart', []);
-        // Tính tổng tiền
-        $total = 0;
-        foreach ($cart as $item) {
-            if ($item['sellprice'] > 0) {
-                $total += $item['sellprice'] * $item['quantity'];
-            } else {
-                $total += $item['price'] * $item['quantity'];
-            }
-        }
-
-        return view('cart.index', compact('cart', 'total'));
-    }
+   
 }

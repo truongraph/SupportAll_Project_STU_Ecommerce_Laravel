@@ -31,35 +31,41 @@
                     <form method="POST" action="{{ route('admin.customers.update', $customers->id) }}">
                         @csrf
                         @method('PUT')
+                        @error('name_customer')
+                            <p class=" alert alert-danger"> {{ $message }}</p>
+                        @enderror
+                        @error('phone_customer')
+                            <p class="alert alert-danger"> {{ $message }}</p>
+                        @enderror
                         <div class="row" bis_skin_checked="1">
                             <div class="col-md-6" bis_skin_checked="1">
                                 <div class="mb-3" bis_skin_checked="1">
                                     <label for="name" class="form-label">Tên khách hàng</label>
-                                    <input type="text" class="form-control" id="name_customer" name="name_customer" required value="{{ $customers->name_customer }}">
+                                    <input type="text" class="form-control" id="name_customer" name="name_customer"  value="{{ $customers->name_customer }}">
                                 </div>
                             </div>
                             <div class="col-md-6" bis_skin_checked="1">
                                 <div class="mb-3" bis_skin_checked="1">
                                     <label for="email" class="form-label">Tài khoản liên kết</label>
-                                    <input type="email" class="form-control" id="id_account" name="id_account" required value="{{ $customers->account->name_account }}" readonly>
+                                    <input type="text" class="form-control" id="id_account" name="id_account" required value="{{ $customers->account->name_account }}" readonly>
                                 </div>
                             </div>
                             <div class="col-md-6" bis_skin_checked="1">
                                 <div class="mb-3" bis_skin_checked="1">
                                     <label for="email" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="email_customer" name="email_customer" required value="{{ $customers->email_customer }}" readonly>
+                                    <input type="email" class="form-control" id="email_customer" name="email_customer" required value="{{ $customers->email_customer }}"readonly >
                                 </div>
                             </div>
                             <div class="col-md-6" bis_skin_checked="1">
                                 <div class="mb-3" bis_skin_checked="1">
                                     <label for="phone" class="form-label">Số điện thoại</label>
-                                    <input type="number" class="form-control" id="phone_customer" name="phone_customer" required value="{{ $customers->phone_customer }}">
+                                    <input type="number" class="form-control" id="phone_customer" name="phone_customer"  value="{{ $customers->phone_customer }}">
                                 </div>
                             </div>
                             <div class="col-md-12" bis_skin_checked="1">
                                 <div class="mb-3" bis_skin_checked="1">
                                     <label for="address" class="form-label">Địa chỉ</label>
-                                    <input type="text" class="form-control" id="address_customer" name="address_customer" required value="{{ $customers->address_customer }}">
+                                    <input type="text" class="form-control" id="address_customer" name="address_customer"  value="{{ $customers->address_customer }}">
                                 </div>
                             </div>
                         </div>

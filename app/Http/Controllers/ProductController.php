@@ -18,6 +18,7 @@ class ProductController extends Controller
     }
     public function show($linkProduct)
     {
+
         $product = Product::where('link_product', $linkProduct)->firstOrFail();
         // Sử dụng mối quan hệ đã được thiết lập để lấy các variants, sizes, và colors
         $variants = $product->variants()->with('size', 'color')->get();

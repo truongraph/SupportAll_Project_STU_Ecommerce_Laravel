@@ -89,6 +89,7 @@
         </div>
     </div>
     <!-- Product Area End -->
+
     <!-- Banner Area Start -->
     <div class="banner-area">
         <div class="container">
@@ -168,7 +169,6 @@
                     </div>
                 @endforeach
             </div>
-
         </div>
     </div>
     <!-- Product Area End -->

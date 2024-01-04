@@ -27,7 +27,6 @@ class OrderController extends Controller
         $order->address_order = $request->input('address');
         $order->total_order = $request->input('total');
         $order->note = $request->input('note');
-        //$order->Id_customer = Auth::user()->customer->id_customer; // Giả sử bạn đã có hệ thống đăng nhập
         $order->save();
 
         // Lưu thông tin thanh toán nếu có
@@ -36,18 +35,25 @@ class OrderController extends Controller
         $payment->Id_order = $order->Id_order;
         $payment->save();
 
-        // Xóa giỏ hàng sau khi đã đặt hàng thành công (tuỳ thuộc vào logic của bạn)
+        // Xóa giỏ hàng sau khi đã đặt hàng thành công
         session()->forget('cart');
 
-        return redirect()->route('cart.index')->with('success', 'Order placed successfully!');
+        return redirect()->route('cart.index')->with('success', 'Đơn hàng đã được đặt thành công!');
     }
 
-
+    public function showSearchForm()
+    {
+        return view('order_search');
+    }
     public function search(Request $request)
     {
         // Lấy thông tin từ form tìm kiếm
         $emailOrPhone = $request->input('email_or_phone');
         $orderCode = $request->input('order_code');
+
+        if (!$emailOrPhone || !$orderCode) {
+            return redirect()->route('order.search.view')->with('error', 'Vui lòng nhập đầy đủ thông tin');
+        }
 
         // Tìm tài khoản từ email hoặc số điện thoại
         $account = Customer::where('email_customer', $emailOrPhone)
@@ -75,10 +81,6 @@ class OrderController extends Controller
         }
     }
 
-    public function showSearchForm()
-    {
-        return view('order_search');
-    }
     public function orderDetail($orderId)
     {
         $order = Order::findOrFail($orderId);
@@ -92,14 +94,14 @@ class OrderController extends Controller
     $order = Order::find($orderId);
 
     if ($order && $order->status_order == 1) {
-        $order->status_order = 0; // Chuyển đổi thành trạng thái đã huỷ
+        $order->status_order = 0;
         $order->save();
         if ($order->status_order == 0){
             foreach ($order->orderDetails as $orderDetail) {
                 // Tìm sản phẩm và kích thước tương ứng để tăng số lượng
                 $productSize = ProductVariant::where('product_id', $orderDetail->productid)
                     ->where('size_id', $orderDetail->sizeid)
-                    ->where('color_id', $orderDetail->colorid) // Tìm theo màu sắc
+                    ->where('color_id', $orderDetail->colorid)
                     ->first();
 
                 if ($productSize) {

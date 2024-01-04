@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
     <!-- breadcrumb-area start -->
     <div class="breadcrumb-area">

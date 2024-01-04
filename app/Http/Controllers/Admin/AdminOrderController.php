@@ -68,16 +68,16 @@ class AdminOrderController extends Controller
         }
         if($order->status_order === 5){
             // Xóa các chi tiết đơn hàng liên quan
-        $order->orderDetails()->delete();
+            $order->orderDetails()->delete();
 
-        // Xóa đơn hàng
-        $order->delete();
-
-        return redirect()->route('admin.orders.index')->with('success', 'Đơn hàng đã được xoá thành công.');
+            // Xóa đơn hàng
+            $order->delete();
+            
+            return redirect()->route('admin.orders.index')->with('success', 'Đơn hàng đã được xoá thành công.');
         }
         // Kiểm tra nếu đơn hàng chưa được hủy
         if ($order->status_order !== 0) {
-            return redirect()->back()->with('error', 'Không thể xóa đơn hàng đã được xác nhận hoặc đang giao.');
+            return redirect()->back()->with('error', 'Vui lòng chuyển trạng thái hủy đơn hoặc hoàn trả trước khi xóa.');
         }
 
         // Xóa các chi tiết đơn hàng liên quan

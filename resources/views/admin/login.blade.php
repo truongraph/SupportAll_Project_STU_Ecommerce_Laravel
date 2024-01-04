@@ -42,7 +42,7 @@
                         <div class="row g-0">
                             <div class="col-lg-6">
                                 <div class="p-lg-5 p-4">
-                                    
+
                                     <div>
                                         <h5><b>HỆ THỐNG QUẢN LÝ BÁN HÀNG</b></h5>
                                         <p class="text-muted">Đăng nhập tài khoản để bắt đầu quản trị</p>
@@ -87,10 +87,7 @@
                     <!-- end card -->
                     <div class="mt-5 text-center">
                         <p>Đi đến trang đặt hàng <a href="{{URL::to('/')}}" class="fw-semibold text-decoration-underline text-primary"> tại đây </a> </p>
-                        <p>© <script>
-                                document.write(new Date().getFullYear())
-
-                            </script> <b>Hệ thống quản lý bán hàng</b></p>
+                        <p>© 2023 <b>Hệ thống quản lý bán hàng</b></p>
                     </div>
                 </div>
                 <!-- end col -->
@@ -116,6 +113,21 @@
     <script src="{{ asset('backend_area/assets/js/pages/dashboard.init.js') }}"></script>
 
     <script src="{{ asset('backend_area/assets/js/app.js') }}"></script>
+    <script>
+        // Hàm ẩn thông báo sau một khoảng thời gian
+        function hideAlert() {
+            document.querySelectorAll('.alert').forEach(alert => {
+                setTimeout(() => {
+                    alert.style.display = 'none';
+                }, 4000);
+            });
+        }
+
+        // Gọi hàm ẩn thông báo khi trang được tải
+        window.onload = function() {
+            hideAlert();
+        };
+    </script>
 </body>
 </html>
 

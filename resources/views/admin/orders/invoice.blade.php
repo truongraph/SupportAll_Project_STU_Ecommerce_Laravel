@@ -251,9 +251,32 @@
             font-size: 14px;
             border-top: 1px dashed #ddd;
         }
-
+        @media print {
+            #goBackButton {
+                display: none;
+            }
+        }
+        .continue-btn{
+            padding: 10px 20px;
+            background: #242021 !important;
+            color: #ffffff !important;
+            border: 2px solid #242021 !important;
+            box-shadow: none !important;
+            border-radius: 3px;
+            font-weight: 700;
+        }
     </style>
+    <!-- Nút Quay lại -->
+    <button id="goBackButton" class="continue-btn">Quay lại trang Quản lý</button>
 
+    <!-- JS để điều hướng khi nút được nhấp -->
+    <script>
+        // Lắng nghe sự kiện khi nút Quay lại được nhấp
+        document.getElementById('goBackButton').addEventListener('click', function () {
+            // Điều hướng trang quay lại trang quản lý đơn hàng
+            window.location.href = "{{ route('admin.orders.index') }}";
+        });
+    </script>
     <!-- JS để in hoá đơn -->
     <script>
         window.onload = function() {
@@ -261,16 +284,16 @@
         };
 
     </script>
- <script>
-    window.onbeforeunload = function() {
-        // Đóng tab hiện tại
-        window.close();
-        // Ngăn chặn cửa sổ popup in từ việc mở trang mới khi tab bị đóng
-        if (window.opener && !window.opener.closed) {
-            window.opener.focus();
-        }
-    };
-</script>
+    <script>
+        window.onbeforeunload = function() {
+            // Đóng tab hiện tại
+            window.close();
+            // Ngăn chặn cửa sổ popup in từ việc mở trang mới khi tab bị đóng
+            if (window.opener && !window.opener.closed) {
+                window.opener.focus();
+            }
+        };
+    </script>
 </body>
 </html>
 

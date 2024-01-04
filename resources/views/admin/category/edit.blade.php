@@ -26,6 +26,9 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
         @endif
+        @error('name_category')
+        <p class="alert alert-danger"> {{ $message }}</p>
+        @enderror
             <div class="card">
                 <div class="card-body">
                     <form method="POST" action="{{ route('admin.categories.update', $category->id) }}">
@@ -35,13 +38,13 @@
                             <div class="col-md-12" bis_skin_checked="1">
                                 <div class="mb-3" bis_skin_checked="1">
                                     <label for="name" class="form-label">Tên danh mục</label>
-                                    <input type="text" class="form-control" id="name_category" name="name_category" required value="{{ $category->name_category }}">
+                                    <input type="text" class="form-control" id="name_category" name="name_category" value="{{ $category->name_category }}">
                                 </div>
                             </div>
                             <div class="col-md-12" bis_skin_checked="1">
                                 <div class="mb-3" bis_skin_checked="1">
                                     <label for="link" class="form-label">Liên kết</label>
-                                    <input type="text" class="form-control" id="link_category" name="link_category" value="{{ $category->link_category }}">
+                                    <input type="text" class="form-control" id="link_category" name="link_category" value="{{ $category->link_category }}" readonly>
                                 </div>
                             </div>
 

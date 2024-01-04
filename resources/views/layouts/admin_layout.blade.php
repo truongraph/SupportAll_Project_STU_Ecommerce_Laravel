@@ -213,10 +213,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-sm-12">
-                            <script>
-                                document.write(new Date().getFullYear())
-
-                            </script> © Hệ thống quản lý bán hàng.
+                            © 2023 Hệ thống quản lý bán hàng.
                         </div>
                     </div>
                 </div>

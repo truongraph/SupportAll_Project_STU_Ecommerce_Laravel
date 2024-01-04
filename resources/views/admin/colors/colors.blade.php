@@ -36,7 +36,7 @@
     <div class="col-xl-4">
         <div class="card">
             <div class="card-body">
-                
+
                 <form method="post"
                     action="{{ isset($color) ? route('admin.colors.update', $color->id) : route('admin.colors.store') }}">
                     @csrf
@@ -44,14 +44,14 @@
                     @method('PUT')
                     @endif
                     <div class="mb-3">
+                        @error('desc_color')
+                        <div class="alert alert-danger">
+                            {{ $message }}
+                        </div>
+                        @enderror
                         <label for="desc_color" class="form-label">{{ isset($color) ? "Chỉnh sửa màu sắc" : "Tạo mới màu sắc" }}</label>
-                        <input type="text" class="form-control" id="desc_color" name="desc_color" required
+                        <input type="text" class="form-control" id="desc_color" name="desc_color"
                             value="{{ isset($color) ? $color->desc_color : '' }}" placeholder="Nhập tên màu sắc">
-                            @error('desc_color')
-                            <div class="alert alert-danger">
-                                {{ $message }}
-                            </div>
-                            @enderror
                     </div>
                     <button class="btn btn-success" type="submit"><i class="bx bx-save"></i> {{ isset($color) ? 'Cập
                         nhật' : 'Lưu màu sắc' }}</button>

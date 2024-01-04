@@ -18,19 +18,14 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8 offset-md-2">
-                @if ($errors->any())
+                {{-- @if ($errors->any())
                     @foreach ($errors->all() as $error)
                         <div class="alert alert-danger alert-dismissible fade show mb-2" role="alert">
                             {{ $error }}
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     @endforeach
-                @endif
-                @if (Session::has('error'))
-                    <div class="alert alert-danger">
-                        {{ Session::get('error') }}
-                    </div>
-                @endif
+                @endif --}}
                 <div class="card">
                     <div class="card-body">
                         <form method="POST" action="{{ route('admin.discounts.update', $discount->id) }}">
@@ -43,6 +38,9 @@
                                         <input value="{{ $discount->code }}" type="text" class="form-control"
                                             id="code" name="code">
                                     </div>
+                                    @error('code')
+                                        <p class="alert alert-danger"> {{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div class="col-md-6" bis_skin_checked="1">
                                     <div class="mb-3" bis_skin_checked="1">
@@ -51,6 +49,9 @@
                                             oninput="formatNumber(this)" class="form-control" id="discount"
                                             name="discount">
                                     </div>
+                                    @error('discount')
+                                        <p class="alert alert-danger"> {{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div class="col-md-6" bis_skin_checked="1">
                                     <div class="mb-3" bis_skin_checked="1">
@@ -59,6 +60,9 @@
                                             type="text" oninput="formatNumber(this)" class="form-control"
                                             id="limit_number" name="limit_number">
                                     </div>
+                                    @error('limit_number')
+                                        <p class="alert alert-danger"> {{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div class="col-md-6" bis_skin_checked="1">
                                     <div class="mb-3" bis_skin_checked="1">
@@ -76,6 +80,15 @@
                                             type="text" class="form-control pickdate" id="expiration_date"
                                             name="expiration_date">
                                     </div>
+                                    @error('expiration_date')
+                                        <p class="alert alert-danger"> {{ $message }}</p>
+                                    @enderror
+                                    <!-- Hiển thị thông báo lỗi ngày ko đúng ngày giờ hiện tại -->
+                                    @if (session('error'))
+                                        <div class="alert alert-danger">
+                                            {{ session('error') }}
+                                        </div>
+                                    @endif
                                 </div>
                                 <div class="col-md-6" bis_skin_checked="1">
                                     <div class="mb-3" bis_skin_checked="1">
@@ -84,6 +97,9 @@
                                             type="text" oninput="formatNumber(this)" class="form-control"
                                             id="payment_limit" name="payment_limit">
                                     </div>
+                                    @error('payment_limit')
+                                        <p class="alert alert-danger"> {{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div bis_skin_checked="1" class="text-right">
                                     <button class="btn btn-success" type="submit"><i class="bx bx-save"></i> Cập
@@ -137,5 +153,17 @@
             // Gán giá trị đã định dạng trở lại vào input
             input.value = value;
         }
+    </script>
+    <script>
+        function hideAlert() {
+            document.querySelectorAll('.alert').forEach(alert => {
+                setTimeout(() => {
+                    alert.style.display = 'none';
+                }, 4000);
+            });
+        }
+        window.onload = function() {
+            hideAlert();
+        };
     </script>
 @endsection

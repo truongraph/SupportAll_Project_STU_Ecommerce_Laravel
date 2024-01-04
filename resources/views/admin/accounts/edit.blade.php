@@ -18,10 +18,18 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8 offset-md-2">
-            @if(session('error'))
-            <div class="alert alert-danger alert-dismissible fade show mb-2" role="alert">
-                {{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
+            @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
             </div>
             @endif
             <div class="card">
@@ -50,7 +58,6 @@
                             </div>
                         </div>
                         <div bis_skin_checked="1">
-                            <!-- Nút xoá chỉ được hiển thị nếu ID không phải là 1 -->
                             @if($account->id !== 1)
                             <button class="btn btn-success" type="submit"><i class="bx bx-save"></i> Lưu tài khoản</button>
                             @endif

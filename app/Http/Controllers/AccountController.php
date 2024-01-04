@@ -105,12 +105,10 @@ class AccountController extends Controller
         if ($newPassword !== $confirmPassword) {
             return redirect()->back()->with('error', 'Mật khẩu mới và xác nhận mật khẩu không khớp.');
         }
-
-
-        // Update password and save to the database
         $account->password_account = md5($newPassword);
         $account->save();
         $request->session()->forget('account_id');
+
         return redirect()->route('login')->with('success', 'Đã thay đổi mật khẩu thành công và đã đăng xuất.');
     }
 
@@ -177,8 +175,9 @@ class AccountController extends Controller
 
 
         // Tạo mã giảm giá
+        $discountRandom = Str::random(3);
         $accountName = $account->name_account;
-        $discountCode = 'WELCOME_' . strtoupper($accountName);
+        $discountCode = 'WELCOME_' . strtoupper($accountName).$discountRandom;
         $expirationDate = Carbon::now()->addDays(30);
 
         $discount = new Discount();
@@ -197,44 +196,28 @@ class AccountController extends Controller
 
     public function updateCustomerInfo(Request $request)
     {
+        $accountId = session('account_id');
+        $customer = Customer::where('id_account', $accountId)->first();
+
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'phone' => 'required',
-            'address' => 'required',
+            'phone' => 'required|digits:10|unique:customers,phone_customer,' . $customer->id,
+            'address' => 'nullable',
+        ],[
+            'name.required' => 'Vui lòng nhập tên khách hàng.',
+            'phone.required' => 'Vui lòng nhập số điện thoại.',
+            'phone.digits' => 'Số điện thoại phải là số có 10 chữ số.',
+            'phone.unique' => 'Số điện thoại này đã tồn tại cho một khách hàng khác.',
         ]);
-        $name = $request->input('name');
-        $phone  = $request->input('phone');
-        $address = $request->input('address');
-
-        if(empty($name) || empty($phone)){
-            return redirect()->back()->with('error', 'Không được để trống thông tin');
-        }
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-        if(strlen($phone) !== 10){
-            return redirect()->back()->with('error', 'Số điện thoại phải là số có 10 chữ số');
-        }
-
-        $accountId = session('account_id');
-        $customer = Customer::where('id_account', $accountId)->first();
-
-
 
         if ($customer) {
             $customer->name_customer = $request->input('name');
             $customer->phone_customer = $request->input('phone');
             $customer->address_customer = $request->input('address');
-
-            // Kiểm tra xem số điện thoại mới có trùng với bất kỳ khách hàng nào khác không
-            $existingCustomer = Customer::where('phone_customer', $phone)
-            ->where('id', '!=', $customer->id)
-            ->first();
-
-            if ($existingCustomer) {
-            return redirect()->back()->with('error', 'Số điện thoại này đã được sử dụng bởi khách hàng khác');
-            }
 
             $customer->save();
 

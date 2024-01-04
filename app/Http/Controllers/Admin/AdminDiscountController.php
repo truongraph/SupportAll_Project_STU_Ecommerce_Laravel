@@ -24,12 +24,6 @@ class AdminDiscountController extends Controller
     }
     public function store(Request $request)
     {
-        $filled = collect($request->all())->filter(); // Lọc bỏ các trường trống
-
-        if ($filled->count() !== count($request->all())) {
-            return redirect()->back()->with('error', 'Vui lòng nhập đầy đủ thông tin');
-        }
-
         $validator = Validator::make($request->all(), [
             'code' => 'required|unique:discounts,code',
             'discount' => 'required',
@@ -38,8 +32,11 @@ class AdminDiscountController extends Controller
             'payment_limit' => 'required',
         ], [
             'code.unique' => 'Mã giảm này đã tồn tại.',
-            'expiration_date' => 'Ngày hết hạn không được để trống',
-
+            'code.required' => 'Vui lòng nhập tên giảm.',
+            'expiration_date.required' => 'Vui lòng chọn ngày hết hạn.',
+            'discount.required' => 'Vui lòng nhập số tiền giảm.',
+            'limit_number.required' => 'Vui lòng nhập số lượng. ',
+            'payment_limit.required' => 'Vui lòng nhập số tiền tối thiểu.'
         ]);
 
         if ($validator->fails()) {
@@ -87,6 +84,11 @@ class AdminDiscountController extends Controller
             'number_used' => 'required',
         ],  [
             'code.unique' => 'Mã giảm này đã tồn tại.',
+            'code.required' => 'Vui lòng nhập tên giảm.',
+            'expiration_date.required' => 'Vui lòng chọn ngày hết hạn.',
+            'discount.required' => 'Vui lòng nhập số tiền giảm.',
+            'limit_number.required' => 'Vui lòng nhập số lượng. ',
+            'payment_limit.required' => 'Vui lòng nhập số tiền tối thiểu.'
         ]);
 
         $discount = Discount::findOrFail($id);

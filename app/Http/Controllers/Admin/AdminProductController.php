@@ -143,13 +143,18 @@ class AdminProductController extends Controller
             ],
             'link_product' => 'required',
             'sortdesc_product' => 'nullable',
-            'desc_product' => 'nullable',
+            'desc_product' => 'required',
             'price_product' => 'required',
             'sellprice_product' => 'nullable',
             'id_category' => 'required',
         ], [
             'name_product.unique' => 'Tên sản phẩm này đã tồn tại, vui lòng nhập tên khác.',
+            'name_product.required' => 'Vui lòng nhập tên sản phẩm.',
             'sku.unique' => 'Mã này đã tồn tại, vui lòng nhập mã khác.',
+            'sku.required' => 'Vui lòng nhập mã sản phẩm.',
+            'price_product.required' => 'Vui lòng nhập giá bán.',
+            'id_category.required' => 'Vui lòng chọn danh mục.',
+            'desc_product.required' => 'Vui lòng nhập mô tả cho sản phẩm.',
         ]);
 
         if ($validator->fails()) {
@@ -236,7 +241,7 @@ class AdminProductController extends Controller
         // Lấy danh mục của sản phẩm dựa trên mối quan hệ trong model Product
         $category = $product->category;
 
-        // Tiếp tục với logic của bạn để lấy thông tin cần thiết khác
+        // Tiếp tục lấy thông tin cần thiết khác
         $sizes = Size::all();
         $colors = Color::all();
         $categories = Category::all();
@@ -262,7 +267,7 @@ class AdminProductController extends Controller
 
     public function deleteVariant($id)
     {
-        $variantId = (int) $id; // Chuyển đổi $id thành số nguyên
+        $variantId = (int) $id; 
 
         $variant = ProductVariant::find($variantId);
 
@@ -312,13 +317,18 @@ class AdminProductController extends Controller
             ],
             'link_product' => 'required',
             'sortdesc_product' => 'nullable',
-            'desc_product' => 'nullable',
+            'desc_product' => 'required',
             'price_product' => 'required',
             'sellprice_product' => 'nullable',
             'id_category' => 'required',
         ], [
             'name_product.unique' => 'Tên sản phẩm này đã tồn tại, vui lòng nhập tên khác.',
+            'name_product.required' => 'Vui lòng nhập tên sản phẩm.',
             'sku.unique' => 'Mã này đã tồn tại, vui lòng nhập mã khác.',
+            'sku.required' => 'Vui lòng nhập mã sản phẩm.',
+            'price_product.required' => 'Vui lòng nhập giá bán.',
+            'id_category.required' => 'Vui lòng chọn danh mục.',
+            'desc_product.required' => 'Vui lòng nhập mô tả cho sản phẩm.',
         ]);
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();

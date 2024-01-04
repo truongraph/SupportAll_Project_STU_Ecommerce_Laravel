@@ -43,19 +43,19 @@
                         <div class="col-md-12" bis_skin_checked="1">
                             <div class="mb-3" bis_skin_checked="1">
                                 <label for="name" class="form-label">Hình ảnh</label>
-                                <input type="file" class="form-control" id="image" name="image" onchange="previewImage(event)">
+                                <input type="file" class="form-control" id="image" name="image" onchange="previewImage(event)" required>
                                <div style="position: relative">
                                 <img id="preview_image" src="" alt="Preview Image" style="width: 100%; height: 300px; display: none;margin-top:10px">
                                 <button style="display: none;position: absolute;top:5px;right:5px" class="btn btn-outline-danger" type="button" id="deletePreviewBtn" onclick="clearPreview()"><i class="bx bx-trash"></i></button>
                                </div>
                             </div>
                         </div>
-                        <div class="col-md-12" bis_skin_checked="1">
+                        {{-- <div class="col-md-12" bis_skin_checked="1">
                             <div class="mb-3" bis_skin_checked="1">
                                 <label for="link" class="form-label">Liên kết</label>
                                 <input type="text" class="form-control" id="link" name="link">
                             </div>
-                        </div>
+                        </div> --}}
 
                     </div>
                     <div class="row" bis_skin_checked="1">

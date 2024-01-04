@@ -60,12 +60,9 @@
                         <div class="product-info">
                             <h3>{{ $product->name_product }}</h3>
                             <ul class="stock-cont">
-                                <li class="product-sku">Danh mục: <span>{{ $product->category->name_category }}</span>
-                                </li>
-                                <li class="product-sku">Mã: <span>{{ $product->sku }}</span>
-                                </li>
+                                <li class="product-sku">Danh mục: <span>{{ $product->category->name_category }}</span></li>
+                                <li class="product-sku">Mã: <span>{{ $product->sku }}</span></li>
                                 <li class="product-sku">Tình trạng:
-                                    {{--  HIỂN THỊ TÌNH TRẠNG HẾT HÀNG --}}
                                     @php
                                         $allVariantsEmpty = true;
                                         foreach ($variants as $variant) {
@@ -84,23 +81,21 @@
                                     @endif
                                 </li>
                                 {{-- @php
-                                    // Tính tổng số lượng của tất cả các biến thể
                                     $totalQuantity = 0;
                                     foreach ($variants as $variant) {
                                         $totalQuantity += $variant->quantity;
                                     }
                                 @endphp
 
-                                <li class="product-sku">
-                                    Tình trạng:
-                                    {{-- Hiển thị thông tin --}}
-                                {{-- @if ($totalQuantity > 0)
+                                <li class="product-sku"> Tình trạng:
+                                    @if ($totalQuantity > 0)
                                         <span class="text-success">Còn {{ $totalQuantity }} sản phẩm</span>
                                     @else
                                         <span class="text-danger">Hết hàng</span>
                                     @endif
                                 </li> --}}
                             </ul>
+
                             <div class="price-box">
                                 @if ($product->sellprice_product > 0)
                                     @php
@@ -552,23 +547,23 @@
         formData.append('size', selectedSize);
         formData.append('color', selectedColor);
         axios.post('/cart/add', formData)
-            .then(function(response) {
-                let message = response.data.message;
-                if (message) {
-                    toastr.success(message);
-                    setTimeout(function() {
-                        window.location.reload();
-                    }, 500);
-                }
-            })
-            .catch(function(error) {
-                let errorMessage = error.response.data.message; // Lấy thông báo lỗi từ response
-                if (errorMessage) {
-                    toastr.error(errorMessage); // Hiển thị thông báo lỗi bằng toast
-                } else {
-                    console.error(error); // Log lỗi nếu không có thông báo lỗi từ controller
-                }
-            });
+        .then(function(response) {
+            let message = response.data.message;
+            if (message) {
+                toastr.success(message);
+                setTimeout(function() {
+                    window.location.reload();
+                }, 500);
+            }
+        })
+        .catch(function(error) {
+            let errorMessage = error.response.data.error; // Lấy thông báo lỗi từ response
+            if (errorMessage) {
+                toastr.error(errorMessage); // Hiển thị thông báo lỗi bằng toast
+            } else {
+                console.error(error); // Log lỗi nếu không có thông báo lỗi từ controller
+            }
+        });
     });
 </script>
 @endsection

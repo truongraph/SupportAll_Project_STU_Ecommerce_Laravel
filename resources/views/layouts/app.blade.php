@@ -227,7 +227,6 @@
                                 <li><a href="/">Trang chủ</a></li>
                                 <li><a href="/ve-chung-toi">Về chúng tôi</a></li>
                                 <li><a href="/categories">Sản phẩm</a></li>
-                                <li><a href="/lienhe">Liên hệ</a></li>
                             </ul>
                         </div>
                     </div>
@@ -237,14 +236,13 @@
                             <ul class="footer-list">
                                 <li><a href="#">Chính sách mua hàng</a></li>
                                 <li><a href="#">Hỗ trợ mua hàng</a></li>
-                                <li><a href="#">Hỗ trợ kỹ thuật</a></li>
+                                <li><a href="/lienhe">Liên hệ giải đáp</a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
         <div class="footer-bottom">
             <div class="container">
                 <div class="row align-items-center">
@@ -260,7 +258,6 @@
     <!-- ======================================================================================================================== -->
     <!-- JS  -->
     <!-- Modernizer JS -->
-
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             var successAlert = document.querySelector('.alert');
@@ -337,8 +334,8 @@
                 prevEl: ".swiper-button-prev",
             },
         });
-        $('.error').delay(3000).hide(0);
-        $('.alert').delay(3000).hide(0);
+        $('.error').delay(4000).hide(0);
+        $('.alert').delay(4000).hide(0);
     </script>
 
 </body>

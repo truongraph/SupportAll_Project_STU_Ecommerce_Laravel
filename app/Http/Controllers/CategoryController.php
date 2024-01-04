@@ -30,15 +30,17 @@ class CategoryController extends Controller
                 $allProducts = $allProducts->sortBy('number_buy', SORT_REGULAR, $sortOrder === 'desc');
             } elseif ($sortBy === 'name') {
                 $allProducts = $allProducts->sortBy('name_product', SORT_REGULAR, $sortOrder === 'desc');
-            } elseif ($sortBy === 'price') {
-                $allProducts = $allProducts->sortBy('sellprice_product', SORT_REGULAR, $sortOrder === 'desc');
-            } elseif ($sortBy === 'created') {
+            }elseif ($sortBy === 'created') {
                 $allProducts = $allProducts->sortBy('created_at', SORT_REGULAR, $sortOrder === 'desc');
+            }elseif ($sortBy === 'price') {
+                $allProducts = $allProducts->sortBy(function ($allProducts) {
+                    return $allProducts->sellprice_product > 0 ? $allProducts->sellprice_product : $allProducts->price_product;
+                }, SORT_REGULAR, $sortOrder === 'desc');
             }
         }
 
         // Phân trang
-        $perPage = 5;
+        $perPage = 10;
         $currentPage = $request->query('page', 1);
         $pagedData = $allProducts->slice(($currentPage - 1) * $perPage, $perPage)->all();
         $totalItems = $allProducts->count();
@@ -69,10 +71,12 @@ class CategoryController extends Controller
                 $products = $products->sortBy('number_buy', SORT_REGULAR, $sortOrder === 'desc');
             } elseif ($sortBy === 'name') {
                 $products = $products->sortBy('name_product', SORT_REGULAR, $sortOrder === 'desc');
-            } elseif ($sortBy === 'price') {
-                $products = $products->sortBy('sellprice_product', SORT_REGULAR, $sortOrder === 'desc');
             } elseif ($sortBy === 'created') {
                 $products = $products->sortBy('created_at', SORT_REGULAR, $sortOrder === 'desc');
+            }elseif ($sortBy === 'price') {
+                $products = $products->sortBy(function ($product) {
+                    return $product->sellprice_product > 0 ? $product->sellprice_product : $product->price_product;
+                }, SORT_REGULAR, $sortOrder === 'desc');
             }
         }
 
@@ -83,6 +87,7 @@ class CategoryController extends Controller
         $products = $products->slice(($page - 1) * $perPage, $perPage);
 
         $totalPages = ceil($totalProducts / $perPage);
+
 
         return view('categories.show', compact('category', 'products', 'totalPages', 'page'));
     }
