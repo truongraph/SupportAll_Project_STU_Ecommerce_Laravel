@@ -119,7 +119,7 @@
                             Tổng quan
                         </li>
                         <li>
-                            <a href="{{URL::to('/')}}" class="waves-effect">
+                            <a target="_blank" href="{{URL::to('/')}}" class="waves-effect">
                                 <i class='bx bx-store'></i>
                                 <span key="t-ui-elements">Website đặt hàng</span>
                             </a>
